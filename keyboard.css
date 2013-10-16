@@ -1,0 +1,68 @@
+
+.white{
+	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	background-image: -webkit-radial-gradient(45px 45px, circle cover, gray, orange);
+	background-image: radial-gradient(45px 45px 45deg, circle cover, gray 0%, orange 100%, red 95%);
+}
+.black{
+	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
+	background-image: -webkit-radial-gradient(45px 45px, circle cover, red, blue);
+	background-image: radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
+}
+.non-selectable{
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.text-off-screen{
+	text-indent: -99999px;
+}
+.note-name{
+	color: white;
+	line-height: 50px;
+	text-align: center;
+	text-transform: capitalize;
+	font-size: 20px;
+	font-family: serif;
+	user-select: none;
+}
+.button{
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+	margin-bottom: 3px;
+	display: inline-block;
+}
+.button:hover{
+	border-radius: 10%;
+}
+.row{
+	border-top: 4px solid black; 
+}
+.row:nth-child(odd) {
+	padding-left: 25px;
+}
+.row:last-child {
+	border-bottom: 3px solid #F0D369; 
+}
+
+#keyboard{
+	background: #4e3e27; /* Old browsers */
+	background: -moz-linear-gradient(left, #4e3e27 0%, #1b1303 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#4e3e27), color-stop(100%,#1b1303)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* Chrome10+,Safari5.1+ */
+	background: -ms-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* IE10+ */
+	background: linear-gradient(to right, #4e3e27 0%,#1b1303 100%); /* W3C */
+	padding: 30px;
+	width: 933px;
+	height: auto;
+}
+#note{
+	width: 100px;
+	height: 100px;
+	background-color: black;
+}

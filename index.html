@@ -1,119 +1,58 @@
 <html>
-<title>Chromatic accordion keyboard layout quiz</title>
+<title>Isomorphic Musical Keyboards</title>
+<link rel=stylesheet type="text/css" href="keyboard.css">
 <script src="jquery.min.js"></script>
-
-<style>
-.white{
-	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
-	background-image: -webkit-radial-gradient(45px 45px, circle cover, gray, orange);
-	background-image: radial-gradient(45px 45px 45deg, circle cover, gray 0%, orange 100%, red 95%);
-}
-.black{
-	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
-	background-image: -webkit-radial-gradient(45px 45px, circle cover, red, blue);
-	background-image: radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
-}
-.button{
-	border-radius: 50%;
-	width: 50px;
-	height: 50px;
-	margin-right: 10px;
-	margin-bottom: 3px;
-	display: inline-block;
-}
-.button:hover{
-	border-radius: 10%;
-}
-.row{
-	border-top: 4px solid black; 
-}
-.row:nth-child(odd) {
-	padding-left: 25px;
-}
-.row:last-child {
-	border-bottom: 3px solid #F0D369; 
-}
-
-#keyboard{
-	background: #4e3e27; /* Old browsers */
-	background: -moz-linear-gradient(left, #4e3e27 0%, #1b1303 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#4e3e27), color-stop(100%,#1b1303)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* Chrome10+,Safari5.1+ */
-	background: -ms-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* IE10+ */
-	background: linear-gradient(to right, #4e3e27 0%,#1b1303 100%); /* W3C */
-	padding: 30px;
-	width: 933px;
-	height: auto;
-}
-#note{
-	font-size: 40px;
-}
-</style>
-
+<script src="keyboard.js"></script>
 <script>
-
-function Keyboard (options){
-	this.el = options.el;
-	this.rows = options.rows || 5;
-	this.system = options.system || "C";
-	this.buttonsInRow = 14;
-	this.systems = {
-		"C": [
-				['e','g','bb','db'],
-				['eb','gb','a','c'],
-				['f','ab','b','d'],
-				['e','g','bb','db'],
-				['gb','a','c','eb'],
-			]
-	}
-	this.render();
-	this.attachEvents();
-}
-
-Keyboard.prototype = {
-	attachEvents: function(){
-		this.el.on("click", ".button", (function(evt){
-			$("#note").text($(evt.target).data("note"))
-		}))
-	},
-
-	render: function(){
-		for(var i=0; i< this.rows; i++){
-			this.el.append("<div class='row row_"+i+"'></div>");
-			this.addButtonsToRow(i);
-		}
-	},
-
-	addButtonsToRow: function(row){
-		var buttonCountAdjustment = this.buttonsInRow + (row % 2)
-		for(var i=0; i<buttonCountAdjustment; i++){
-			var note = this.buttonNote(row, i);
-			var color = (note.length == 2) ? "black" : "white";
-			this.el.find(".row_"+row).append("<div class='button "+color+"' data-note='"+note+"'></div>");
-		}
-	},
-
-	buttonNote: function(row, position){
-		var buttonPattern = this.systems[this.system];
-		return buttonPattern[row][position % 4];
-	}
-}
-
-
-
-$(document).ready(function(){
+function csystem(){
 	new Keyboard({
 		el: $("#keyboard")
 	});
+}
+function bsystem(){
+	new Keyboard({
+		el: $("#keyboard"), 
+		system: "B", 
+		rows: 5
+	});
+}
+function janko(){
+	new Keyboard({
+		el: $("#keyboard"), 
+		system: "J", 
+		rows: 4
+	});
+}
+
+function toggleNoteNames(){
+	$("#keyboard .button").toggleClass("note-name text-off-screen");
+}
+
+$(document).ready(function(){
+	csystem();
 });
 
 </script>
 <body>
+<h1>Isomorphic Musical Keyboards</h1>
+
+
+<h3>Available Keyboards</h3>
+<button onclick='csystem()'>C-system</button><br>
+<button onclick='bsystem()'>B-system</button><br>
+<button onclick='janko()'>Janko </button><br>
+<button onclick='jammer()'>Jammer </button><br>
+<label class='non-selectable'><input type='checkbox' onclick='toggleNoteNames()' checked>Show note names</label>
 
 <div id="keyboard"></div>
 
-<div id="note">Click the buttons</div>
+<div id="note" class="note-name">Click the buttons</div>
 
+<h3>Sources:</h3>
+<ul>
+<li><a href="http://squeezehead.com/uniform-keyboard/">Uniform Keyboard</a> by Noel Cragg
+<li><a href="http://www.thecipher.com/c_and_b_system_cba_spelling.html">The Cipher - B and C systems comparisons</a> by Roger Edward Blumberg
+</ul>
 </body>
 
 </html>
