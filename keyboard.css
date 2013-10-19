@@ -31,6 +31,7 @@
 }
 .button{
 	border-radius: 50%;
+	cursor: pointer;
 	width: 50px;
 	height: 50px;
 	margin-right: 10px;
@@ -43,7 +44,7 @@
 .row{
 	border-top: 4px solid black; 
 }
-.row:nth-child(odd) {
+.even {
 	padding-left: 25px;
 }
 .row:last-child {

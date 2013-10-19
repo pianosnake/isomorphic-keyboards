@@ -1,26 +1,39 @@
 
 function Keyboard (options){
+	this.notes = ['c','db','d','eb','e','f','gb','g','ab','a','bb','b']
 	this.el = options.el;
-	this.rows = options.rows || 5;
-	this.system = options.system || "C";
+	this.totalRows = options.rows || 5;
+	this.startNote = options.startNote != undefined ? options.startNote : 6;
 	this.buttonsPerRow = 14;
 	this.systems = {
-		"C": [
-				['e','g','bb','db'],
-				['eb','gb','a','c'],
-				['f','ab','b','d']
-			], 
+		//stepSize: 1 means the next note up and to the right is 1 semitone.
+		"C": {
+			rows: 3,
+			stepSize: 1
+		},
 
-		"B": [
-				['db', 'e','g','bb'],
-				['b','d','f','ab'],
-				['c','eb','gb','a']
-			],
-		"J": [
-				['db', 'eb','f','g','a','b'],
-				['c','d','e','gb','ab','bb']
-			]
+		"B": {
+			rows: 3,
+			stepSize: 2
+		},
+
+		"F": {
+			rows: 4,
+			stepSize: 1
+		},
+
+		"W": {
+			rows: 2,
+			stepSize: 7
+		},
+
+		"J": {
+			rows: 2,
+			stepSize: 1
+
+		}
 	}
+	this.system = options.system ? this.systems[options.system] : this.systems["C"];
 	this.render();
 	this.attachEvents();
 }
@@ -34,26 +47,36 @@ Keyboard.prototype = {
 
 	render: function(){
 		this.el.empty();
-		for(var i=0; i< this.rows; i++){
-			this.el.append("<div class='row row_"+i+"'></div>");
+		for(var i=this.totalRows-1; i>-1; i--){
+			var extraClass = (i%2==0) ? "even" : ""
+			this.el.append("<div class='row "+extraClass+" row_"+i+"'></div>");
 			this.addButtonsToRow(i);
 		}
 	},
 
+	toggleNoteNames: function(){
+		this.el.find(".button").toggleClass("note-name text-off-screen");
+	},
+
+	buttonNoteAt: function(x, y){
+		//adjust the horizontal position because we're thinking of up/downs on the diagonals
+		//and the more we go to the right the more of an offset there'll be
+		 x -= Math.ceil(y/2)  ;
+		 x +=12;
+
+		// calculate the wanted note as a distance from the startNote
+		// based on the given row, the step size, and position
+		return (this.startNote+ (y*this.system.stepSize) + (this.system.rows * x)) % 12;
+	},
+
 	addButtonsToRow: function(row){
 		//add another button if the row is odd
-		var buttonsPerRowMod = this.buttonsPerRow + (row % 2)
-		for(var i=0; i<buttonsPerRowMod; i++){
-			var note = this.buttonNote(row, i);
+		var buttonsPerRowAdjusted = this.buttonsPerRow + (row % 2);
+		
+		for(var i=0; i<buttonsPerRowAdjusted; i++){
+			var note = this.notes[this.buttonNoteAt(i, row)];
 			var color = (note.length == 2) ? "black" : "white";
 			this.el.find(".row_"+row).append("<div class='note-name non-selectable button "+color+"' data-note='"+note+"'>"+note+"</div>");
 		}
-	},
-
-	buttonNote: function(row, position){
-		var buttonPattern = this.systems[this.system];
-		var rows = buttonPattern.length;
-		var positions = buttonPattern[0].length;
-		return buttonPattern[row % rows][position % positions];
 	}
 }

@@ -4,54 +4,67 @@
 <script src="jquery.min.js"></script>
 <script src="keyboard.js"></script>
 <script>
-function csystem(){
-	new Keyboard({
-		el: $("#keyboard")
-	});
-}
-function bsystem(){
-	new Keyboard({
-		el: $("#keyboard"), 
-		system: "B", 
-		rows: 5
-	});
-}
-function janko(){
-	new Keyboard({
-		el: $("#keyboard"), 
-		system: "J", 
-		rows: 4
-	});
+var k; 
+
+function parseQueryString(query){
+	var vars = query.split("&");
+	var obj = {}
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        obj[pair[0]] = pair[1];
+    }
+    return obj;
 }
 
-function toggleNoteNames(){
-	$("#keyboard .button").toggleClass("note-name text-off-screen");
+function changeKeyboard(specString){
+	var specs = parseQueryString(specString);
+	k = new Keyboard({
+		el: $("#keyboard"), 
+		system: specs.system, 
+		startNote: parseInt(specs.start),
+		rows: parseInt(specs.rows)
+	});
 }
 
 $(document).ready(function(){
-	csystem();
+	changeKeyboard($("select option:first").val())
 });
 
 </script>
 <body>
 <h1>Isomorphic Musical Keyboards</h1>
 
+<p>These keyboard systems can be built on a brick-like pattern. A system can be defined using two parameters: (1) the number of rows it requires before it repeats and (2) the size of the interval going diagonally up one. 
 
 <h3>Available Keyboards</h3>
-<button onclick='csystem()'>C-system</button><br>
-<button onclick='bsystem()'>B-system</button><br>
-<button onclick='janko()'>Janko </button><br>
-<button onclick='jammer()'>Jammer </button><br>
-<label class='non-selectable'><input type='checkbox' onclick='toggleNoteNames()' checked>Show note names</label>
+
+<select onchange="changeKeyboard(this.value)"> 
+<option value='system=C&rows=5&start=6'>C-system 5 rows</option>
+<option value='system=C&rows=4&start=6'>C-system 4 rows</option>
+<option value='system=B&rows=4&start=11'>B-system 4 rows</option>
+<option value='system=B&rows=5&start=11'>B-system 5 rows</option>
+<option value='system=B&rows=6&start=11'>B-system 6 rows</option>
+<option value='system=J&rows=2&start=0'>Janko 2 rows</option>
+<option value='system=J&rows=3&start=0'>Janko 3 rows</option>
+<option value='system=J&rows=4&start=0'>Janko 4 rows</option>
+<option value='system=J&rows=5&start=0'>Janko 5 rows</option>
+<option value='system=W&rows=9&start=6'>Wicki-Hayden (Jammer) 9 rows</option>
+<option value='system=F&rows=8&start=0'>Extended C-style 8 rows</option>
+</select>
+
+<label class='non-selectable'><input type='checkbox' onclick='k.toggleNoteNames()' checked>Show note names</label>
 
 <div id="keyboard"></div>
 
 <div id="note" class="note-name">Click the buttons</div>
 
-<h3>Sources:</h3>
+<h3>Related:</h3>
 <ul>
+<li><a href="http://www.shiverware.com/musix.html">Musix<a/> An iPhone app to build isomorphic keyboards
+<li><a href="http://en.wikipedia.org/wiki/Isomorphic_keyboard">Isomorphic Keyboard</a> Wikipedia
 <li><a href="http://squeezehead.com/uniform-keyboard/">Uniform Keyboard</a> by Noel Cragg
 <li><a href="http://www.thecipher.com/c_and_b_system_cba_spelling.html">The Cipher - B and C systems comparisons</a> by Roger Edward Blumberg
+<li><a href="http://www.accordionpage.com/treble.html">Hans Palm's Accordion page</a>
 </ul>
 </body>
 
