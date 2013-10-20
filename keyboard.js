@@ -5,6 +5,7 @@ function Keyboard (options){
 	this.totalRows = options.rows || 5;
 	this.startNote = options.startNote != undefined ? options.startNote : 6;
 	this.buttonsPerRow = 14;
+	this.onClick = options.onClick;
 	this.systems = {
 		//stepSize: 1 means the next note up and to the right is 1 semitone.
 		"C": {
@@ -27,6 +28,11 @@ function Keyboard (options){
 			stepSize: 7
 		},
 
+		"S": {
+			rows: 7,
+			stepSize: -1
+		},
+
 		"J": {
 			rows: 2,
 			stepSize: 1
@@ -40,9 +46,11 @@ function Keyboard (options){
 
 Keyboard.prototype = {
 	attachEvents: function(){
-		this.el.on("click", ".button", (function(evt){
-			$("#note").text($(evt.target).data("note"))
-		}))
+		var self = this;
+		this.el.on("click", ".button", function(evt){
+			var note = $(evt.target).data("note");
+			self.onClick(note);
+		})
 	},
 
 	render: function(){

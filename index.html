@@ -1,10 +1,14 @@
 <html>
+<head>
+	<meta charset="utf-8">
 <title>Isomorphic Musical Keyboards</title>
 <link rel=stylesheet type="text/css" href="keyboard.css">
+<link rel=stylesheet type="text/css" href="notation.css">
 <script src="jquery.min.js"></script>
 <script src="keyboard.js"></script>
+<script src="notation.js"></script>
 <script>
-var k; 
+var keyboard, notation; 
 
 function parseQueryString(query){
 	var vars = query.split("&");
@@ -18,28 +22,37 @@ function parseQueryString(query){
 
 function changeKeyboard(specString){
 	var specs = parseQueryString(specString);
-	k = new Keyboard({
+	keyboard = new Keyboard({
 		el: $("#keyboard"), 
 		system: specs.system, 
 		startNote: parseInt(specs.start),
-		rows: parseInt(specs.rows)
+		rows: parseInt(specs.rows),
+		onClick: function(note){notation.show(note);}
 	});
 }
 
 $(document).ready(function(){
-	changeKeyboard($("select option:first").val())
+	notation = new Notation({
+		el: $("#note-display")
+	});
+
+	changeKeyboard($("select option:first").val());
+	
 });
 
 </script>
+</head>
 <body>
 <h1>Isomorphic Musical Keyboards</h1>
 
-<p>These keyboard systems can be built on a brick-like pattern. A system can be defined using two parameters: (1) the number of rows it requires before it repeats and (2) the size of the interval going diagonally up one. 
 <p>Isomorphic musical keyboards must have been around ever since a lazy pianist decided that transposing between keys on the piano was too hard. Although they look alien to most people, compared to the piano keyboard, any of the isomorphic keyboards make more logical sense. The keyboard that made its furthest inroads into the piano world was the one pattented by Paul von Jankó in 1882 of which a fair number of examples can be found on the net. (See <a href="http://squeezehead.com/uniform-keyboard/">this</a>)</p>
 
 <p>In the 20th century proponents of microtonality employed them to build instruments such as the Fokker 31 tone organ. Brian Hayden developed a concertina to use the Wicki system in the 60's that kept all the fingers playing a diatonic scale together. 
+
 <p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system is partly an isomorphic keyboard. On the treble side, the B chromatic system has replaced all other accordion keyboards in Russia and the Balkans, and the C system is widely used in Western Europe.</p>
+
 <p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
+
 <h3>Available Keyboards</h3>
 
 <select onchange="changeKeyboard(this.value)"> 
@@ -56,11 +69,12 @@ $(document).ready(function(){
 <option value='system=F&rows=8&start=0'>Extended C-style 8 rows</option>
 </select>
 
-<label class='non-selectable'><input type='checkbox' onclick='k.toggleNoteNames()' checked>Show note names</label>
+<label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>
 
 <div id="keyboard"></div>
 
-<div id="note" class="note-name">Click the buttons</div>
+
+<div id="note-display"></div>
 
 <h3>Related:</h3>
 <ul>
