@@ -1,9 +1,55 @@
+NOTES = ['c','db','d','eb','e','f','gb','g','ab','a','bb','b'];
+
+// Note is made by either (1) parsing given text into a note with numeric value and octave or (2) take a numeric value 
+function Note(info){
+	this.numericValue = 0;
+	this.octave = 0; 
+	this.info = info;
+	this.parseInfo();
+	
+}
+Note.prototype = {
+	parseInfo: function(){
+		if(typeof(this.info) == "string"){
+			this.calculateNumericValueAndOctave();
+
+		}else if(typeof(this.info.octave) !== "undefined" && typeof(this.info.numericValue) !== "undefined") {
+			this.octave = this.info.octave;
+			while (this.info.numericValue < 0 ){
+				this.info.numericValue += 12;
+			}
+			this.numericValue = this.info.numericValue;
+		}
+
+	},
+
+	calculateNumericValueAndOctave: function(){
+		var parts = this.info.split("");
+		
+		if(parts.length == 3 && !isNaN(parts[2])){
+			// if the note is like gb3
+			this.numericValue =  NOTES.indexOf(parts[0] + ""+ parts[1]);
+			this.octave = parseInt(parts[2]);
+
+		}else if (parts.length == 2 && !isNaN(parts[1])){
+			//or if its like a3
+			this.numericValue =  NOTES.indexOf(parts[0]);
+			this.octave = parseInt(parts[1]);
+		}
+	},
+
+	text: function(){
+		
+		return NOTES[this.numericValue % 12] + "" + this.octave;
+	},
+}
+
+
 
 function Keyboard (options){
-	this.notes = ['c','db','d','eb','e','f','gb','g','ab','a','bb','b']
 	this.el = options.el;
 	this.totalRows = options.rows || 5;
-	this.startNote = options.startNote != undefined ? options.startNote : 6;
+	this.startNote = new Note(options.startNote);
 	this.buttonsPerRow = 14;
 	this.onClick = options.onClick;
 	this.systems = {
@@ -66,25 +112,35 @@ Keyboard.prototype = {
 		this.el.find(".button").toggleClass("note-name text-off-screen");
 	},
 
-	buttonNoteAt: function(x, y){
+	noteAt: function(x, y){
 		//adjust the horizontal position because we're thinking of up/downs on the diagonals
 		//and the more we go to the right the more of an offset there'll be
-		 x -= Math.ceil(y/2)  ;
-		 x +=12;
+		 x -= Math.ceil(y/2);
+		 // x +=12;
 
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
-		return (this.startNote+ (y*this.system.stepSize) + (this.system.rows * x)) % 12;
+		var newNoteValue = (this.startNote.numericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
+		var newNoteOctave = Math.floor(newNoteValue / 12) + this.startNote.octave;
+
+		// return  this.getNoteText(newNoteValue) +""+ newNoteOctave;
+		return new Note({numericValue: newNoteValue, octave: newNoteOctave})
 	},
+
 
 	addButtonsToRow: function(row){
 		//add another button if the row is odd
 		var buttonsPerRowAdjusted = this.buttonsPerRow + (row % 2);
 		
 		for(var i=0; i<buttonsPerRowAdjusted; i++){
-			var note = this.notes[this.buttonNoteAt(i, row)];
-			var color = (note.length == 2) ? "black" : "white";
-			this.el.find(".row_"+row).append("<div class='note-name non-selectable button "+color+"' data-note='"+note+"'>"+note+"</div>");
+			var noteText = this.noteAt(i, row).text();
+			var color = (noteText.length == 3) ? "black" : "white";
+			$('<div/>', {
+   				"class": 'note-name non-selectable button '+ color,
+    			"data-note": noteText,
+    			"text": noteText
+			}).appendTo(this.el.find(".row_"+row));
+
 		}
 	}
 }
