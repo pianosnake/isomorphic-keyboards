@@ -31,6 +31,9 @@ Note.prototype = {
 
 	text: function(){
 		var octave = Math.floor(this.numericValue / 12);
+		while(this.numericValue < 0){
+			this.numericValue +=12;
+		}
 		return NOTES[this.numericValue % 12] + "" + octave;
 	},
 }
