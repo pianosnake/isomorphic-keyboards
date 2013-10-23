@@ -27,7 +27,7 @@ function changeKeyboard(specString){
 		system: specs.system, 
 		startNote: specs.start,
 		rows: parseInt(specs.rows),
-		onClick: function(note){notation.show(note);}
+		onClick: function(note){notation.draw(note);}
 	});
 }
 
@@ -66,7 +66,7 @@ $(document).ready(function(){
 <option value='system=J&rows=3&start=c3'>Jankó 3 rows</option>
 <option value='system=J&rows=4&start=c3'>Jankó 4 rows</option>
 <option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
-<option value='system=F&rows=8&start=c2'>Extended C-style 8 rows</option>
+<option value='system=F&rows=8&start=c0'>Aaron Copland would love me</option>
 </select>
 
 <label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>

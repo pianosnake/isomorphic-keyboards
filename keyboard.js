@@ -5,6 +5,8 @@ function Note(info){
 	this.numericValue = 0;
 	this.info = info;
 	this.parseInfo();
+	this.text = this.text();
+	this.octave = this.octave();
 }
 
 Note.prototype = {
@@ -29,12 +31,15 @@ Note.prototype = {
 		}
 	},
 
+	octave: function(){
+		return Math.floor(this.numericValue / 12);
+	},
+
 	text: function(){
-		var octave = Math.floor(this.numericValue / 12);
 		while(this.numericValue < 0){
 			this.numericValue +=12;
 		}
-		return NOTES[this.numericValue % 12] + "" + octave;
+		return NOTES[this.numericValue % 12] + "" + this.octave();
 	},
 }
 
@@ -59,7 +64,7 @@ function Keyboard (options){
 		},
 
 		"F": {
-			rows: 4,
+			rows: 5,
 			stepSize: 1
 		},
 
@@ -88,7 +93,7 @@ Keyboard.prototype = {
 	attachEvents: function(){
 		var self = this;
 		this.el.on("click", ".button", function(evt){
-			var note = $(evt.target).data("note");
+			var note = new Note($(evt.target).data("note"));
 			self.onClick(note);
 		})
 	},
@@ -114,7 +119,7 @@ Keyboard.prototype = {
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
 		var newNoteValue = (this.startNote.numericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
-		return new Note(newNoteValue)
+		return new Note(newNoteValue);
 	},
 
 
@@ -123,12 +128,12 @@ Keyboard.prototype = {
 		var buttonsPerRowAdjusted = this.buttonsPerRow + (row % 2);
 		
 		for(var i=0; i<buttonsPerRowAdjusted; i++){
-			var noteText = this.noteAt(i, row).text();
-			var color = (noteText.length == 3) ? "black" : "white";
+			var note = this.noteAt(i, row);
+			var color = (note.text.length == 3) ? "black" : "white";
 			$('<div/>', {
    				"class": 'note-name non-selectable button '+ color,
-    			"data-note": noteText,
-    			"text": noteText
+    			"data-note": note.numericValue,
+    			"text": note.text
 			}).appendTo(this.el.find(".row_"+row));
 
 		}
