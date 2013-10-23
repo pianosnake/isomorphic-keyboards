@@ -3,44 +3,35 @@ NOTES = ['c','db','d','eb','e','f','gb','g','ab','a','bb','b'];
 // Note is made by either (1) parsing given text into a note with numeric value and octave or (2) take a numeric value 
 function Note(info){
 	this.numericValue = 0;
-	this.octave = 0; 
 	this.info = info;
 	this.parseInfo();
-	
 }
+
 Note.prototype = {
 	parseInfo: function(){
 		if(typeof(this.info) == "string"){
-			this.calculateNumericValueAndOctave();
-
-		}else if(typeof(this.info.octave) !== "undefined" && typeof(this.info.numericValue) !== "undefined") {
-			this.octave = this.info.octave;
-			while (this.info.numericValue < 0 ){
-				this.info.numericValue += 12;
-			}
-			this.numericValue = this.info.numericValue;
+			this.calculateNumericValue(this.info.split(""));
+		}else if(typeof(this.info) == "number") {
+			this.numericValue = this.info;
 		}
-
 	},
 
-	calculateNumericValueAndOctave: function(){
-		var parts = this.info.split("");
-		
+	calculateNumericValue: function(parts){
 		if(parts.length == 3 && !isNaN(parts[2])){
 			// if the note is like gb3
-			this.numericValue =  NOTES.indexOf(parts[0] + ""+ parts[1]);
-			this.octave = parseInt(parts[2]);
-
+			this.numericValue =  NOTES.indexOf(parts[0] + ""+ parts[1]) + (parts[2] * 12);
 		}else if (parts.length == 2 && !isNaN(parts[1])){
-			//or if its like a3
-			this.numericValue =  NOTES.indexOf(parts[0]);
-			this.octave = parseInt(parts[1]);
+			//or if it's like a3
+			this.numericValue =  NOTES.indexOf(parts[0]) + (parts[1] * 12);
+		}else if (parts.length ==1){
+			//or if it's like c then just use c4
+			this.numericValue =  NOTES.indexOf(parts[0]) + (4* 12);
 		}
 	},
 
 	text: function(){
-		
-		return NOTES[this.numericValue % 12] + "" + this.octave;
+		var octave = Math.floor(this.numericValue / 12);
+		return NOTES[this.numericValue % 12] + "" + octave;
 	},
 }
 
@@ -116,15 +107,11 @@ Keyboard.prototype = {
 		//adjust the horizontal position because we're thinking of up/downs on the diagonals
 		//and the more we go to the right the more of an offset there'll be
 		 x -= Math.ceil(y/2);
-		 // x +=12;
 
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
 		var newNoteValue = (this.startNote.numericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
-		var newNoteOctave = Math.floor(newNoteValue / 12) + this.startNote.octave;
-
-		// return  this.getNoteText(newNoteValue) +""+ newNoteOctave;
-		return new Note({numericValue: newNoteValue, octave: newNoteOctave})
+		return new Note(newNoteValue)
 	},
 
 
