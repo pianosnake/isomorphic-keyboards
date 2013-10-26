@@ -1,6 +1,7 @@
 function Notation(options){
 		
 	this.el = options.el;
+	this.width = options.width || 240;
 	this.positions = {
 		"c": 50,
 		"d": 43,
@@ -20,6 +21,7 @@ Notation.prototype = {
 	render: function(){
 		this.el.addClass("system");
 		this.el.append("<div class='clef'></div><div class='bars'></div><div class='modifier'></div><div class='whole-note'></div>");
+		this.el.find(".bars").width(this.width);
 	},
 
 	draw: function(note){

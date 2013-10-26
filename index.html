@@ -33,7 +33,8 @@ function changeKeyboard(specString){
 
 $(document).ready(function(){
 	notation = new Notation({
-		el: $("#note-display")
+		el: $("#note-display"),
+		width: 300
 	});
 
 	changeKeyboard($("select option:first").val());
