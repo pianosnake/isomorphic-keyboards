@@ -27,8 +27,6 @@ function Notation(options){
 }
 
 Notation.prototype = {
-
-
 	draw: function(note){
 		this.hideExtras();
 		this.show(this.note);
@@ -36,6 +34,8 @@ Notation.prototype = {
 
 		if(note.text.charAt(1) == "b"){
 			this.show(this.flat, notePosition);
+		}else if (note.text.charAt(1) == "#"){
+			this.show(this.sharp, notePosition);
 		}
 
 		this.showHelpers(notePosition);
