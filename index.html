@@ -3,7 +3,6 @@
 	<meta charset="utf-8">
 <title>Isomorphic Musical Keyboards</title>
 <link rel=stylesheet type="text/css" href="keyboard.css">
-<link rel=stylesheet type="text/css" href="notation.css">
 <script src="jquery.min.js"></script>
 <script src="keyboard.js"></script>
 <script src="notation.js"></script>
@@ -32,14 +31,12 @@ function changeKeyboard(specString){
 }
 
 $(document).ready(function(){
+function svgLoaded(){
 	notation = new Notation({
-		el: $("#note-display"),
+		el: $("#noteDisplay"),
 		width: 300
 	});
-
-	changeKeyboard($("select option:first").val());
-	
-});
+}
 
 </script>
 </head>
@@ -75,7 +72,6 @@ $(document).ready(function(){
 <div id="keyboard"></div>
 
 
-<div id="note-display"></div>
 <h3>Todo:</h3>
 <ul>
 	<li>allow sharps as input

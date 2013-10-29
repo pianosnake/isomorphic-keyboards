@@ -5,8 +5,9 @@ function Note(info){
 	this.numericValue = 0;
 	this.info = info;
 	this.parseInfo();
-	this.text = this.text();
+	this.name = this.name();
 	this.octave = this.octave();
+	this.text = this.text();
 }
 
 Note.prototype = {
@@ -35,12 +36,16 @@ Note.prototype = {
 		return Math.floor(this.numericValue / 12);
 	},
 
-	text: function(){
+	name: function(){
 		while(this.numericValue < 0){
 			this.numericValue +=12;
 		}
-		return NOTES[this.numericValue % 12] + "" + this.octave();
+		return NOTES[this.numericValue % 12];
 	},
+
+	text: function(){
+		return this.name + "" + this.octave
+	}
 }
 
 
