@@ -80,7 +80,7 @@ function Keyboard (options){
 	this.totalRows = options.rows || 5;
 	this.startNote = new Note(options.startNote);
 	this.buttonsPerRow = 14;
-	this.onClick = options.onClick;
+	this.clickCallback = options.onClick;
 	this.systems = {
 		//stepSize: 1 means the next note up and to the right is 1 semitone.
 		"C": {
@@ -124,7 +124,7 @@ Keyboard.prototype = {
 		var self = this;
 		this.el.on("click", ".button", function(evt){
 			var note = new Note($(evt.target).data("note"));
-			self.onClick(note);
+			self.clickCallback(note);
 		})
 	},
 

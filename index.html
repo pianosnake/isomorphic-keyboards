@@ -7,6 +7,18 @@
 <script src="keyboard.js"></script>
 <script src="notation.js"></script>
 <script src="vexflow-min.js"></script>
+<style>
+.note-and-keyboard{
+	width: 1200px;
+}
+.left{
+	float: left;
+}
+.clear{
+	clear: both;
+}
+</style>
+
 <script>
 var keyboard, notation, canvas, ctx, voice, stave; 
 
@@ -32,6 +44,8 @@ function changeKeyboard(specString){
 
 			drawVexNote(note);
 
+			$("#keyboard .button").removeClass("selected");
+			$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");
 		}
 	});
 }
@@ -54,6 +68,7 @@ function drawVexNote(note){
 
 $(document).ready(function(){
 	changeKeyboard($("select option:first").val());
+
 });
 
 function svgLoaded(){
@@ -76,9 +91,16 @@ function svgLoaded(){
 
 <p>These keyboards have also inspired a rethinking of music notation. The thinking is symilar: why not have every pattern of dots on the staff, regardless of its vertical position, mean the same thing musically? Similar to how guitar tablature notation evolved to fit the instrument layout, these notation systems follow the layout of the keyboard they're meant for. 
 
-<p>IMportant limitatino is that on a piano keyboard, because each key is different, you must rearrange each transposition so that it sounds and feels good in that key. This results in new discoveries about the piece, and makes each transposition different. The isomorphic keyboard enouranges the same voicings which may not sound good in every regitser. 
+<p>Although a lot of pianists complain about transposing on the regular piano keyboard, there is an advantage to it. A voicing may sound good in the middle register but transposed half an octave down it may sound muddled. Also a voicing or lick may be very comfortable in one key but impossible in another key. These acoustic and physical considerations often result in creating an arrangement that sounds quite different in each key. Isomorphic keyboards enouranges using the same voicings and fingerings in all keys which may not sound good in every register. 
+
+<p>To counteract the above thing, isomorphic keyboards allow new licks and patterns that aren't possible on the piano keyboard at all. 
 
 <p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
+
+
+<div class="note-and-keyboard">
+<div class="left">
+
 
 <h3>Available Keyboards</h3>
 
@@ -88,28 +110,29 @@ function svgLoaded(){
 <option value='system=B&rows=4&start=b2'>B-system 4 rows</option>
 <option value='system=B&rows=5&start=b2'>B-system 5 rows</option>
 <option value='system=B&rows=6&start=b2'>B-system 6 rows</option>
-<option value='system=S&rows=2&start=gb1'>Stradella root & counter-bass</option>
+<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
 <option value='system=J&rows=2&start=c4'>Jankó 2 rows</option>
 <option value='system=J&rows=3&start=c4'>Jankó 3 rows</option>
 <option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
 <option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
-<option value='system=F&rows=8&start=c0'>Aaron Copland would love me</option>
 </select>
-
+<br>
 <label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>
-
-<div id="keyboard"></div>
+<br>
 
 <object type="image/svg+xml" id="noteDisplay" data="notation/note_on_staff.svg" onload="svgLoaded()">Your browser does not support SVG</object>
 
-<canvas id="note-canvas" width=700 height=300></canvas>
+</div>
+
+<div id="keyboard" class="left"></div>
+</div>
 
 
 
-<h3>Todo:</h3>
-<ul>
-	<li>allow sharps as input
-</ul>
+<div class="clear"></div>
+<canvas id="note-canvas" width=200 height=300></canvas>
+
+
 <h3>Related:</h3>
 <ul>
 <li><a href="http://schrammelharmonika.nonfoodfactory.org/Andreas_Teufel/">Andreas Teufel's thesis</a> about the Vienese Schrammelharmonika.

@@ -1,13 +1,9 @@
 
 .white{
-	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
-	background-image: -webkit-radial-gradient(45px 45px, circle cover, gray, orange);
-	background-image: radial-gradient(45px 45px 45deg, circle cover, gray 0%, orange 100%, red 95%);
+	background: #b2b2b2;
 }
 .black{
-	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
-	background-image: -webkit-radial-gradient(45px 45px, circle cover, red, blue);
-	background-image: radial-gradient(45px 45px 45deg, circle cover, red 0%, blue 100%, red 95%);
+	background: #030303;
 }
 .non-selectable{
 	-webkit-touch-callout: none;
@@ -17,9 +13,7 @@
 	-ms-user-select: none;
 	user-select: none;
 }
-.text-off-screen{
-	text-indent: -99999px;
-}
+
 .note-name{
 	color: white;
 	line-height: 50px;
@@ -36,29 +30,36 @@
 	height: 50px;
 	margin-right: 10px;
 	margin-bottom: 3px;
+	margin-top: 0;
+	margin-left: 0;
+	padding-top: 0;
+
 	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	top: 0;
 }
-.button:hover{
-	border-radius: 10%;
+
+.button:hover, .button.selected{
+	border: 3px solid red;
+	margin-bottom: 0;
+	margin-right: 4px;
+	left: -3px;
+	top: -3px;
 }
 .row{
-	border-top: 4px solid black; 
+	border-top: 1px solid #555555; 
+	height: 50px;
 }
-.even {
+.row.even {
 	padding-left: 25px;
 }
 .row:last-child {
-	border-bottom: 3px solid #F0D369; 
+	border-bottom: 1px solid #555555; 
 }
 
 #keyboard{
-	background: #4e3e27; /* Old browsers */
-	background: -moz-linear-gradient(left, #4e3e27 0%, #1b1303 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#4e3e27), color-stop(100%,#1b1303)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* Chrome10+,Safari5.1+ */
-	background: -ms-linear-gradient(left, #4e3e27 0%,#1b1303 100%); /* IE10+ */
-	background: linear-gradient(to right, #4e3e27 0%,#1b1303 100%); /* W3C */
+	background: #f2f2f2; 
 	padding: 30px;
-	width: 933px;
 	height: auto;
 }
