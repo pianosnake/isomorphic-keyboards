@@ -68,14 +68,21 @@ function drawVexNote(note){
 
 $(document).ready(function(){
 	changeKeyboard($("select option:first").val());
-
-});
-
-function svgLoaded(){
 	notation = new Notation({
-		el: $("#noteDisplay"),
+		el: $("#notation"),
 		width: 300
 	});
+});
+
+
+function startQuiz(){
+
+	console.log("starting quiz");
+
+	//clear keyboard
+	//show random note on notation
+
+
 }
 
 </script>
@@ -87,44 +94,35 @@ function svgLoaded(){
 
 <p>In the 20th century proponents of microtonality employed them to build instruments such as the Fokker 31 tone organ. Brian Hayden developed a concertina to use the Wicki system in the 60's that kept all the fingers playing a diatonic scale together. 
 
-<p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system is partly an isomorphic keyboard. On the treble side, the B chromatic system has replaced all other accordion keyboards in Russia and the Balkans, and the C system is widely used in Western Europe. The B system was invented in the 1850's when the Austrian musician Franz Walther had an idea to arrange a row of buttons to match the diminished chord. The Austrian Schrammel accordion was the first to use it. </p>
+<p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system's rows of roots and counters is an isomorphic system. On the treble side, the B chromatic system has replaced all other accordion keyboards in Russia and the Balkans, and the C system is widely used in Western Europe. The B system was invented in the 1850's when the Austrian musician Franz Walther had an idea to arrange the rows of buttons on a Schrammel accordion to match the notes in a diminished chord.</p>
 
 <p>These keyboards have also inspired a rethinking of music notation. The thinking is symilar: why not have every pattern of dots on the staff, regardless of its vertical position, mean the same thing musically? Similar to how guitar tablature notation evolved to fit the instrument layout, these notation systems follow the layout of the keyboard they're meant for. 
 
-<p>Although a lot of pianists complain about transposing on the regular piano keyboard, there is an advantage to it. A voicing may sound good in the middle register but transposed half an octave down it may sound muddled. Also a voicing or lick may be very comfortable in one key but impossible in another key. These acoustic and physical considerations often result in creating an arrangement that sounds quite different in each key. Isomorphic keyboards enouranges using the same voicings and fingerings in all keys which may not sound good in every register. 
-
-<p>To counteract the above thing, isomorphic keyboards allow new licks and patterns that aren't possible on the piano keyboard at all. 
+<p>Although transposing is difficult for lots of pianists there are advantages to mastering the idiosincracies of each different key. A voicing may sound good in the middle register but transposed half an octave down it may sound muddy. Also a voicing or lick may feel very comfortable in one key but be impossible to play in another key. These acoustic and physical considerations often result in new arrangements that sound quite different in each key. Isomorphic keyboards enourange using the same voicings and fingerings in all keys which may not sound good in every register. As a counter argument, isomorphic keyboards allow new licks and voicings that are impossible on the piano keyboard. 
 
 <p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
 
 
 <div class="note-and-keyboard">
-<div class="left">
+	<div class="left">
+		<h3>Available Keyboards</h3>
+		<select onchange="changeKeyboard(this.value)"> 
+		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
+		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
+		<option value='system=B&rows=5&start=b2'>B-system 5 rows</option>
+		<option value='system=B&rows=6&start=b2'>B-system 6 rows</option>
+		<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
+		<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
+		<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
+		</select>
+		<br>
+		<label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>
+		<br>
+		<button onclick="startQuiz()">Start Quiz</button><br>
+		<div id="notation"></div>
+	</div>
 
-
-<h3>Available Keyboards</h3>
-
-<select onchange="changeKeyboard(this.value)"> 
-<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
-<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
-<option value='system=B&rows=4&start=b2'>B-system 4 rows</option>
-<option value='system=B&rows=5&start=b2'>B-system 5 rows</option>
-<option value='system=B&rows=6&start=b2'>B-system 6 rows</option>
-<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
-<option value='system=J&rows=2&start=c4'>Jankó 2 rows</option>
-<option value='system=J&rows=3&start=c4'>Jankó 3 rows</option>
-<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
-<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
-</select>
-<br>
-<label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>
-<br>
-
-<object type="image/svg+xml" id="noteDisplay" data="notation/note_on_staff.svg" onload="svgLoaded()">Your browser does not support SVG</object>
-
-</div>
-
-<div id="keyboard" class="left"></div>
+	<div id="keyboard" class="left"></div>
 </div>
 
 
