@@ -21,7 +21,7 @@
 </style>
 
 <script>
-var keyboard, notation, canvas, ctx, voice, stave; 
+var keyboard, notation, canvas, ctx, voice, stave, quizStarted; 
 
 function parseQueryString(query){
 	var vars = query.split("&");
@@ -33,20 +33,24 @@ function parseQueryString(query){
     return obj;
 }
 
-function changeKeyboard(specString){
-	var specs = parseQueryString(specString);
+function showKeyboard(spec){
+	var specs = parseQueryString(spec);
 	keyboard = new Keyboard({
 		el: $("#keyboard"), 
 		system: specs.system, 
 		startNote: specs.start,
 		rows: parseInt(specs.rows),
 		onClick: function(note){
-			notation.draw(note);
 
-			drawVexNote(note);
+			if(quizStarted){
 
-			$("#keyboard .button").removeClass("selected");
-			$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");
+			}else{
+				notation.draw(note);
+				drawVexNote(note);
+				$("#keyboard .button").removeClass("selected");
+				$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
+			}
+			
 		}
 	});
 }
@@ -68,7 +72,7 @@ function drawVexNote(note){
 }
 
 $(document).ready(function(){
-	changeKeyboard($("select option:first").val());
+	showKeyboard($("select option:first").val());
 	notation = new Notation({
 		el: $("#notation"),
 		width: 300
@@ -77,13 +81,15 @@ $(document).ready(function(){
 
 
 function startQuiz(){
-
-	console.log("starting quiz");
-
-	//clear keyboard
+	quizStarted = true; 
+	$("#keyboard .button").removeClass("selected");
+	//random note between 40 and 82
+	var randomOctave = 3 + Math.floor(Math.random()*3);
+	var notes = Object.keys(NOTES);
+	var randomNote = notes[Math.floor(Math.random()*notes.length)];
 	//show random note on notation
-
-
+	var n = randomNote + "" + randomOctave;
+	notation.draw(new Note(n));
 }
 
 </script>
@@ -107,7 +113,7 @@ function startQuiz(){
 <div class="note-and-keyboard">
 	<div class="left">
 		<h3>Available Keyboards</h3>
-		<select onchange="changeKeyboard(this.value)"> 
+		<select onchange="showKeyboard(this.value)"> 
 		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
 		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
 		<option value='system=B&rows=5&start=b2'>B-system 5 rows</option>
