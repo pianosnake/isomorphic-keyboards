@@ -17,38 +17,45 @@ NOTES = {
 	'bb': 10,
 	'b': 11
 }
+
 // Note is made with either (1) a given text like 'c#4' or (2) a numeric value 
+// It's an object that has text, name, octave and numeric value
 function Note(info){
 	this.parseInfo(info);
-	this.octave = this.getOctave();
 }
 
 Note.prototype = {
 	parseInfo: function(info){
 		if(typeof(info) == "string"){
 			this.text = info;
-			this.calculateNumericValue(info.split(""));
+			this.setNameAndOctave(info.split(""));
+			this.setNumericValue();
 		}else if(typeof(info) == "number") {
 			this.numericValue = info;
 			this.text = this.getText();
 			this.name = this.getName();
+			this.octave = this.getOctave();
 		}
 	},
 
-	calculateNumericValue: function(parts){
+	setNameAndOctave: function(parts){
 		if(parts.length == 3 && !isNaN(parts[2])){
 			// if the note is like gb3
 			this.name = parts[0] + "" + parts[1];
-			this.numericValue =  NOTES[this.name] + (parts[2] * 12);
+			this.octave = parts[2]
 		}else if (parts.length == 2 && !isNaN(parts[1])){
 			//or if it's like a3
 			this.name = parts[0];
-			this.numericValue =  NOTES[this.name] + (parts[1] * 12);
+			this.octave = parts[1];			
 		}else if (parts.length ==1){
 			//or if it's like c then just use c4
 			this.name = parts[0];
-			this.numericValue =  NOTES[this.name] + (4 * 12);
+			this.octave = 4;
 		}
+	},
+
+	setNumericValue: function(parts){
+		this.numericValue =  NOTES[this.name] + (this.octave * 12);
 	},
 
 	getOctave: function(){
