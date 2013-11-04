@@ -6,36 +6,12 @@ function Keyboard (options){
 	this.clickCallback = options.onClick;
 	this.systems = {
 		//stepSize: 1 means the next note up and to the right is 1 semitone.
-		"C": {
-			rows: 3,
-			stepSize: 1
-		},
-
-		"B": {
-			rows: 3,
-			stepSize: 2
-		},
-
-		"F": {
-			rows: 5,
-			stepSize: 1
-		},
-
-		"W": {
-			rows: 2,
-			stepSize: 7
-		},
-
-		"S": {
-			rows: 7,
-			stepSize: -1
-		},
-
-		"J": {
-			rows: 2,
-			stepSize: 1
-
-		}
+		"C": {rows: 3, stepSize: 1},
+		"B": {rows: 3, stepSize: 2},
+		"F": {rows: 5, stepSize: 1},
+		"W": {rows: 2, stepSize: 7},
+		"S": {rows: 7, stepSize: -1},
+		"J": {rows: 2, stepSize: 1}
 	}
 	this.system = options.system ? this.systems[options.system] : this.systems["C"];
 	this.render();
@@ -64,7 +40,7 @@ Keyboard.prototype = {
 		this.el.find(".button").toggleClass("note-name text-off-screen");
 	},
 
-	noteAt: function(x, y){
+	getNoteAt: function(x, y){
 		//adjust the horizontal position because we're thinking of up/downs on the diagonals
 		//and the more we go to the right the more of an offset there'll be
 		 x -= Math.ceil(y/2);
@@ -81,7 +57,7 @@ Keyboard.prototype = {
 		var buttonsPerRowAdjusted = this.buttonsPerRow + (row % 2);
 		
 		for(var i=0; i<buttonsPerRowAdjusted; i++){
-			var note = this.noteAt(i, row);
+			var note = this.getNoteAt(i, row);
 			var color = (note.text.length == 3) ? "black" : "white";
 			$('<div/>', {
    				"class": 'note-name non-selectable button '+ color,
