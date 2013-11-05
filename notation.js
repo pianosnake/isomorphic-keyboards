@@ -22,19 +22,19 @@ Notation.prototype = {
 
 	render: function(){
 		this.svg = this.el.find("object")[0].contentDocument;
-		this.note = this.svg.getElementById("note");
+		this.noteHead = this.svg.getElementById("note");
 		this.sharp = this.svg.getElementById("sharp");
 		this.flat = this.svg.getElementById("flat");
 		this.eight = this.svg.getElementById("eight");
 		this.staff = this.svg.getElementById("staff");
 		this.staffBBox = this.staff.getBBox();
 		this.hideExtras();
-		this.hide(this.note);
+		this.hide(this.noteHead);
 	}, 
 
 	draw: function(note){
 		this.hideExtras();
-		this.show(this.note);
+		this.show(this.noteHead);
 		var notePosition = this.getPosition(note);
 
 		if(note.text.charAt(1) == "b"){
@@ -46,7 +46,7 @@ Notation.prototype = {
 		this.removeAllHelperLines();
 		this.showHelperLines(notePosition);
 
-		this.note.setAttribute("transform","translate(0,"+notePosition+")");
+		this.noteHead.setAttribute("transform","translate(0,"+notePosition+")");
 	}, 
 
 	getPosition: function(note){

@@ -1,26 +1,10 @@
-NOTES = {
-	'c' : 0, 
-	'c#': 1,
-	'db': 1,
-	'd': 2,
-	'd#': 3,
-	'eb': 3,
-	'e': 4,
-	'f': 5,
-	'f#': 6,
-	'gb': 6,
-	'g': 7,
-	'g#': 8,
-	'ab': 8,
-	'a': 9,
-	'a#': 10,
-	'bb': 10,
-	'b': 11
-}
+NOTES = ['c','c#','db','d','d#','eb','e','f','f#','gb','g','g#','ab','a','a#','bb','b']
+VALUES = [0,1,1,2,3,3,4,5,6,6,7,8,8,9,10,10,11]
 
-// Note is made with either (1) a given text like 'c#4' or (2) a numeric value 
+// Note is made with either (1) a given text like 'c#4' or (2) a numeric value. Numeric value can take an optional parameter to prefer the flat name
 // It's an object that has text, name, octave and numeric value
-function Note(info){
+function Note(info, preferFlatName){
+	this.preferFlatName = preferFlatName || false;
 	this.parseInfo(info);
 }
 
@@ -32,8 +16,8 @@ Note.prototype = {
 			this.setNumericValue();
 		}else if(typeof(info) == "number") {
 			this.numericValue = info;
-			this.text = this.getText();
 			this.name = this.getName();
+			this.text = this.getText();
 			this.octave = this.getOctave();
 		}
 	},
@@ -55,7 +39,7 @@ Note.prototype = {
 	},
 
 	setNumericValue: function(parts){
-		this.numericValue =  NOTES[this.name] + (this.octave * 12);
+		this.numericValue =  VALUES[NOTES.indexOf(this.name)] + (this.octave * 12);
 	},
 
 	getOctave: function(){
@@ -66,18 +50,18 @@ Note.prototype = {
 		while(this.numericValue < 0){
 			this.numericValue +=12;
 		}
-		var noteName; 
-		for(var i in NOTES){
-    		if (NOTES.hasOwnProperty(i) && NOTES[i] === this.numericValue % 12) {
-        		noteName = i;
-        		break;
-    		}
+		var name;
+		if(this.preferFlatName){
+			name = NOTES[VALUES.lastIndexOf(this.numericValue % 12)];
+		}else{
+			name = NOTES[VALUES.indexOf(this.numericValue % 12)];
 		}
-		return noteName;
+		return name; 
 	},
 
 	getText: function(){
-		return this.getName() + "" + this.getOctave();
+		return this.name + "" + this.getOctave();
 	}
+
 }
 

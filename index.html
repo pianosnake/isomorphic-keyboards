@@ -21,7 +21,7 @@
 </style>
 
 <script>
-var keyboard, notation, canvas, ctx, voice, stave, quizStarted; 
+var keyboard, notation, canvas, ctx, voice, stave, quizStarted, quizzedNote; 
 
 function parseQueryString(query){
 	var vars = query.split("&");
@@ -40,18 +40,7 @@ function showKeyboard(spec){
 		system: specs.system, 
 		startNote: specs.start,
 		rows: parseInt(specs.rows),
-		onClick: function(note){
-
-			if(quizStarted){
-
-			}else{
-				notation.draw(note);
-				drawVexNote(note);
-				$("#keyboard .button").removeClass("selected");
-				$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
-			}
-			
-		}
+		onClick: noteClick
 	});
 }
 
@@ -79,17 +68,41 @@ $(document).ready(function(){
 	});
 });
 
+function noteClick(note){
+	if(quizStarted){
+		if(note.numericValue === quizzedNote.numericValue){
+			console.log("TRUE :)");
+			showRandomNote();
+		}else{
+			console.log("FALSE :( Try again")
+		}
+
+	}else{
+		notation.draw(note);
+		drawVexNote(note);
+		$("#keyboard .button").removeClass("selected");
+		$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
+	}
+}
 
 function startQuiz(){
-	quizStarted = true; 
+	quizStarted = true;
+	showRandomNote();
+}
+
+function showRandomNote(){
 	$("#keyboard .button").removeClass("selected");
-	//random note between 40 and 82
-	var randomOctave = 3 + Math.floor(Math.random()*3);
-	var notes = Object.keys(NOTES);
-	var randomNote = notes[Math.floor(Math.random()*notes.length)];
-	//show random note on notation
-	var n = randomNote + "" + randomOctave;
-	notation.draw(new Note(n));
+	//random note between 39 and 82
+	var r = 39 + Math.floor((Math.random()*43));
+
+	// re-generate if it's the same as the previous note
+	if((quizzedNote && r == quizzedNote.numericValue)  ){
+		showRandomNote();
+	}else{
+		quizzedNote = new Note(r, (Math.round(Math.random()) == 1));
+		notation.draw(quizzedNote);
+	}
+
 }
 
 </script>
@@ -101,7 +114,7 @@ function startQuiz(){
 
 <p>In the 20th century proponents of microtonality employed them to build instruments such as the Fokker 31 tone organ. Brian Hayden developed a concertina to use the Wicki system in the 60's that kept all the fingers playing a diatonic scale together. 
 
-<p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system's rows of roots and counters is an isomorphic system. On the treble side, the B chromatic system has replaced all other accordion keyboards in Russia and the Balkans, and the C system is widely used in Western Europe. The B system was invented in the 1850's when the Austrian musician Franz Walther had an idea to arrange the rows of buttons on a Schrammel accordion to match the notes in a diminished chord.</p>
+<p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system's rows of roots and counters is an isomorphic system though only 2 of the isomorphic rows are usually available, namely the roots and the counters. On the treble side, the B chromatic system is very popular in Russia and the Balkans, and the C system is widely used in Western Europe. The B system was invented in the 1850's when the Austrian musician Franz Walther had an idea to arrange the rows of buttons on a Schrammel accordion to match the notes in a diminished chord.</p>
 
 <p>These keyboards have also inspired a rethinking of music notation. The thinking is symilar: why not have every pattern of dots on the staff, regardless of its vertical position, mean the same thing musically? Similar to how guitar tablature notation evolved to fit the instrument layout, these notation systems follow the layout of the keyboard they're meant for. 
 
@@ -116,8 +129,9 @@ function startQuiz(){
 		<select onchange="showKeyboard(this.value)"> 
 		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
 		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
-		<option value='system=B&rows=5&start=b2'>B-system 5 rows</option>
-		<option value='system=B&rows=6&start=b2'>B-system 6 rows</option>
+		<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
+		<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
+		<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
 		<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
 		<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
 		<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>

@@ -2,6 +2,7 @@ function Keyboard (options){
 	this.el = options.el;
 	this.totalRows = options.rows || 5;
 	this.startNote = new Note(options.startNote);
+	this.startNoteNumericValue = this.startNote.numericValue;
 	this.buttonsPerRow = 14;
 	this.clickCallback = options.onClick;
 	this.systems = {
@@ -47,7 +48,7 @@ Keyboard.prototype = {
 
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
-		var newNoteValue = (this.startNote.numericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
+		var newNoteValue = (this.startNoteNumericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
 		return new Note(newNoteValue);
 	},
 
