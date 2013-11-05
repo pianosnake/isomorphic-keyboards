@@ -38,6 +38,8 @@
 	vertical-align: top;
 	position: relative;
 	top: 0;
+
+	box-shadow: 3px 3px 5px #777;
 }
 
 .button:hover, .button.selected{
@@ -57,8 +59,11 @@
 .row:last-child {
 	border-bottom: 1px solid #555555; 
 }
-
+.text-off-screen{
+	text-indent: -99999px;
+}
 #keyboard{
+	border-radius: 30px;
 	background: #f2f2f2; 
 	padding: 30px;
 	height: auto;
