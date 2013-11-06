@@ -23,8 +23,7 @@ Keyboard.prototype = {
 	attachEvents: function(){
 		var self = this;
 		this.el.on("click", ".button", function(evt){
-			var note = new Note($(evt.target).data("note"));
-			self.clickCallback(note);
+			self.clickCallback(evt.target);
 		})
 	},
 
@@ -39,6 +38,18 @@ Keyboard.prototype = {
 
 	toggleNoteNames: function(){
 		this.el.find(".button").toggleClass("note-name text-off-screen");
+	},
+
+	hideText: function(){
+		this.el.find(".button").addClass("text-off-screen");
+	}, 
+
+	showText: function(){
+		this.el.find(".button").removeClass("text-off-screen");
+	},
+
+	deselect: function(){
+		this.el.find(".button").removeClass("selected");
 	},
 
 	getNoteAt: function(x, y){

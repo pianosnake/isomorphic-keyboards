@@ -14,7 +14,7 @@ Notation.prototype = {
 	addSvgObj: function(){
 		var self = this; 
 		var svgObj = document.createElement("object");
-		svgObj.data = "notation/note_on_staff.svg";
+		svgObj.data = "note_on_staff.svg";
 		svgObj.type = "image/svg+xml";
 		svgObj.onload = function(){self.render()};
 		this.el.append(svgObj);
@@ -25,15 +25,13 @@ Notation.prototype = {
 		this.noteHead = this.svg.getElementById("note");
 		this.sharp = this.svg.getElementById("sharp");
 		this.flat = this.svg.getElementById("flat");
-		this.eight = this.svg.getElementById("eight");
 		this.staff = this.svg.getElementById("staff");
 		this.staffBBox = this.staff.getBBox();
-		this.hideExtras();
-		this.hide(this.noteHead);
+		this.reset();
 	}, 
 
 	draw: function(note){
-		this.hideExtras();
+		this.reset();
 		this.show(this.noteHead);
 		var notePosition = this.getPosition(note);
 
@@ -43,7 +41,6 @@ Notation.prototype = {
 			this.show(this.sharp, notePosition);
 		}
 
-		this.removeAllHelperLines();
 		this.showHelperLines(notePosition);
 
 		this.noteHead.setAttribute("transform","translate(0,"+notePosition+")");
@@ -63,10 +60,11 @@ Notation.prototype = {
 		el.setAttribute('visibility','hidden');
 	},
 
-	hideExtras: function(){
+	reset: function(){
 		this.hide(this.flat);
 		this.hide(this.sharp);
-		this.hide(this.eight);
+		this.hide(this.noteHead);
+		this.removeAllHelperLines();
 	}, 
 
 	removeAllHelperLines: function(){

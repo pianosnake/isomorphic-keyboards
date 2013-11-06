@@ -7,7 +7,8 @@
 <script src="note.js"></script>
 <script src="keyboard.js"></script>
 <script src="notation.js"></script>
-<script src="vexflow-min.js"></script>
+<script src="quiz.js"></script>
+
 <style>
 .note-and-keyboard{
 	width: 1200px;
@@ -18,10 +19,31 @@
 .clear{
 	clear: both;
 }
+.marker{
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	text-indent: 0;
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	line-height: 50px;
+}
+.wrong:before{
+	content: "✗";
+	color: red;
+}
+.right:before{
+	content: "✓";
+	color: green;
+}
 </style>
 
 <script>
-var keyboard, notation, canvas, ctx, voice, stave, quizStarted, quizzedNote; 
+var keyboard, notation, quiz; 
+
 
 function parseQueryString(query){
 	var vars = query.split("&");
@@ -44,20 +66,20 @@ function showKeyboard(spec){
 	});
 }
 
-function drawVexNote(note){
-	var renderer = new Vex.Flow.Renderer("note-canvas", Vex.Flow.Renderer.Backends.CANVAS);
-	ctx = renderer.getContext();
-	ctx.clear();
-
-  	stave = new Vex.Flow.Stave(0, 0, 100);
-  	stave.addClef("treble").setContext(ctx).draw();
-	
-    var vexNote = new Vex.Flow.StaveNote({ keys: [note.name+"/"+note.octave], duration: "w" })
-    			
-    if(note.name.charAt(1) == "b"){
-		vexNote.addAccidental(0, new Vex.Flow.Accidental("b"))
-    }
-  	Vex.Flow.Formatter.FormatAndDraw(ctx, stave, [vexNote]);	
+function noteClick(clickedButton){
+	var $btn = $(clickedButton);
+	var note = new Note($btn.data("note"));
+	if(quiz.started){
+		if(note.numericValue === quiz.lastQuestion.numericValue){
+			quiz.right($btn);
+		}else{
+			quiz.wrong($btn);
+		}
+	}else{
+		notation.draw(note);
+		$("#keyboard .button").removeClass("selected");
+		$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
+	}
 }
 
 $(document).ready(function(){
@@ -66,44 +88,16 @@ $(document).ready(function(){
 		el: $("#notation"),
 		width: 300
 	});
+	quiz = new Quiz();
 });
 
-function noteClick(note){
-	if(quizStarted){
-		if(note.numericValue === quizzedNote.numericValue){
-			console.log("TRUE :)");
-			showRandomNote();
-		}else{
-			console.log("FALSE :( Try again")
-		}
 
-	}else{
-		notation.draw(note);
-		drawVexNote(note);
-		$("#keyboard .button").removeClass("selected");
-		$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
-	}
-}
 
-function startQuiz(){
-	quizStarted = true;
-	showRandomNote();
-}
+// a question and answer system with promises
+// the question is a promise
+// a correct answer resolves it 
+// a false answer fails it
 
-function showRandomNote(){
-	$("#keyboard .button").removeClass("selected");
-	//random note between 39 and 82
-	var r = 39 + Math.floor((Math.random()*43));
-
-	// re-generate if it's the same as the previous note
-	if((quizzedNote && r == quizzedNote.numericValue)  ){
-		showRandomNote();
-	}else{
-		quizzedNote = new Note(r, (Math.round(Math.random()) == 1));
-		notation.draw(quizzedNote);
-	}
-
-}
 
 </script>
 </head>
@@ -122,35 +116,29 @@ function showRandomNote(){
 
 <p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
 
-
-<div class="note-and-keyboard">
-	<div class="left">
-		<h3>Available Keyboards</h3>
-		<select onchange="showKeyboard(this.value)"> 
-		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
-		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
-		<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
-		<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
-		<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
-		<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
-		<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
-		<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
-		</select>
-		<br>
-		<label class='non-selectable'><input type='checkbox' onclick='keyboard.toggleNoteNames()' checked>Show note names</label>
-		<br>
-		<button onclick="startQuiz()">Start Quiz</button><br>
-		<div id="notation"></div>
-	</div>
-
-	<div id="keyboard" class="left"></div>
+<div id="notation" class="left"></div>
+<div id="keyboard" class="left"></div>
+<div class="left">
+	<h3>Available Keyboards</h3>
+	<select onchange="showKeyboard(this.value)"> 
+	<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
+	<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
+	<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
+	<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
+	<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
+	<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
+	<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
+	<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
+	</select>
+	
+	<button id="quizBtn" onclick="quiz.buttonClick()">Start Quiz</button><br>
 </div>
+
+	
 
 
 
 <div class="clear"></div>
-<canvas id="note-canvas" width=200 height=300></canvas>
-
 
 <h3>Related:</h3>
 <ul>
