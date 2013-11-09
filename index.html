@@ -19,6 +19,9 @@
 .clear{
 	clear: both;
 }
+.quiz{
+	padding-left: 20px;	
+}
 .marker{
 	width: 50px;
 	height: 50px;
@@ -41,69 +44,12 @@
 }
 </style>
 
-<script>
-var keyboard, notation, quiz; 
-
-
-function parseQueryString(query){
-	var vars = query.split("&");
-	var obj = {}
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        obj[pair[0]] = pair[1];
-    }
-    return obj;
-}
-
-function showKeyboard(spec){
-	var specs = parseQueryString(spec);
-	keyboard = new Keyboard({
-		el: $("#keyboard"), 
-		system: specs.system, 
-		startNote: specs.start,
-		rows: parseInt(specs.rows),
-		onClick: noteClick
-	});
-}
-
-function noteClick(clickedButton){
-	var $btn = $(clickedButton);
-	var note = new Note($btn.data("note"));
-	if(quiz.started){
-		if(note.numericValue === quiz.lastQuestion.numericValue){
-			quiz.right($btn);
-		}else{
-			quiz.wrong($btn);
-		}
-	}else{
-		notation.draw(note);
-		$("#keyboard .button").removeClass("selected");
-		$("#keyboard .button[data-note='"+note.numericValue+"']").addClass("selected");	
-	}
-}
-
-$(document).ready(function(){
-	showKeyboard($("select option:first").val());
-	notation = new Notation({
-		el: $("#notation"),
-		width: 300
-	});
-	quiz = new Quiz();
-});
-
-
-
-// a question and answer system with promises
-// the question is a promise
-// a correct answer resolves it 
-// a false answer fails it
-
-
-</script>
 </head>
 <body>
 <h1>Isomorphic Musical Keyboards</h1>
-
+http://www.emusic.com/album/jason-webley/viaje/10902627/
+http://svg-edit.googlecode.com/svn/branches/2.6/editor/svg-editor.html
+http://www.newyorker.com/online/blogs/culture/2013/10/jonathan-schwartz-favorite-cds-recordings-american-songbook.html
 <p>Isomorphic musical keyboards must have been around ever since a lazy pianist decided that transposing between keys on the piano was too hard. Although they look alien to most people, compared to the piano keyboard, any of the isomorphic keyboards make more logical sense. The keyboard that made its furthest inroads into the piano world was the one patented by Paul von Jankó in 1882 of which a fair number of examples can be found on the net. (See <a href="http://squeezehead.com/uniform-keyboard/">this</a>)</p>
 
 <p>In the 20th century proponents of microtonality employed them to build instruments such as the Fokker 31 tone organ. Brian Hayden developed a concertina to use the Wicki system in the 60's that kept all the fingers playing a diatonic scale together. 
@@ -112,28 +58,35 @@ $(document).ready(function(){
 
 <p>These keyboards have also inspired a rethinking of music notation. The thinking is similar: why not have every pattern of dots on the staff, regardless of its vertical position, mean the same thing musically? Similar to how guitar tablature notation evolved to fit the instrument layout, these notation systems follow the layout of the keyboard they're meant for. 
 
-<p>Although transposing is difficult for lots of pianists there are advantages to mastering the idiosyncrasies of each different key. A voicing may sound good in the middle register but transposed half an octave down it may sound muddy. Also a voicing or lick may feel very comfortable in one key but be impossible to play in another key. These acoustic and physical considerations often result in new arrangements that sound quite different in each key. Isomorphic keyboards enourage using the same voicings and fingerings in all keys which may not sound good in every register. As a counter argument, isomorphic keyboards allow new licks and voicings that are impossible on the piano keyboard. 
+<p>Although transposing is difficult on a regular piano keyboard there are advantages to mastering each different key. A voicing may sound good in the middle register but transposed half an octave down it may sound muddy. Also a voicing or lick may feel very comfortable in one key but be impossible to play in another key. These acoustic and physical considerations often result in new arrangements that sound quite different in each key. Isomorphic keyboards enourage using the same voicings and fingerings in all keys which may not sound good in every register. As a counter argument, isomorphic keyboards allow new licks and voicings that are impossible on the piano keyboard. 
 
 <p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
 
-<div id="notation" class="left"></div>
-<div id="keyboard" class="left"></div>
-<div class="left">
-	<h3>Available Keyboards</h3>
-	<select onchange="showKeyboard(this.value)"> 
-	<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
-	<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
-	<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
-	<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
-	<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
-	<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
-	<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
-	<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
-	</select>
-	
-	<button id="quizBtn" onclick="quiz.buttonClick()">Start Quiz</button><br>
-</div>
+<div id="keyboard"></div>
 
+<div>
+	<div id="notation" class="left"></div>
+
+	<div class="left quiz">
+		<h3>Available Keyboards</h3>
+		<select onchange="showKeyboard(this.value)" id="keyboardSelector"> 
+		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
+		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
+		<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
+		<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
+		<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
+		<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
+		<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
+		<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
+		</select>
+		
+		<button id="quizBtn" onclick="quiz.buttonClick()">Start Quiz</button><br>
+		<div>
+			<p>Last score: <span id="lastScore"></span></p>
+			<p>Best score: <span id="bestScore"></span></p>
+		</div>
+	</div>
+</div>
 	
 
 

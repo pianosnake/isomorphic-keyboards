@@ -3,6 +3,8 @@ function Keyboard (options){
 	this.totalRows = options.rows || 5;
 	this.startNote = new Note(options.startNote);
 	this.startNoteNumericValue = this.startNote.numericValue;
+	this.lowestNote = null;
+	this.highestNote = null;
 	this.buttonsPerRow = 14;
 	this.clickCallback = options.onClick;
 	this.systems = {
@@ -28,6 +30,7 @@ Keyboard.prototype = {
 	},
 
 	render: function(){
+		this.el.unbind();
 		this.el.empty();
 		for(var i=this.totalRows-1; i>-1; i--){
 			var extraClass = (i%2==0) ? "even" : ""
@@ -52,6 +55,17 @@ Keyboard.prototype = {
 		this.el.find(".button").removeClass("selected");
 	},
 
+	compareToHighestAndLowestNote: function(noteValue){
+	
+		if(this.highestNote == null || noteValue > this.highestNote){
+			this.highestNote = noteValue;
+		}
+		if(this.lowestNote == null || noteValue < this.lowestNote){
+			this.lowestNote = noteValue; 
+		}
+	}, 
+
+
 	getNoteAt: function(x, y){
 		//adjust the horizontal position because we're thinking of up/downs on the diagonals
 		//and the more we go to the right the more of an offset there'll be
@@ -60,8 +74,11 @@ Keyboard.prototype = {
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
 		var newNoteValue = (this.startNoteNumericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
+
+		this.compareToHighestAndLowestNote(newNoteValue);
 		return new Note(newNoteValue);
 	},
+
 
 
 	addButtonsToRow: function(row){
