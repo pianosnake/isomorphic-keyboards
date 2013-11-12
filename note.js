@@ -1,5 +1,5 @@
-NOTES = ['c','c#','db','d','d#','eb','e','f','f#','gb','g','g#','ab','a','a#','bb','b']
-VALUES = [0,1,1,2,3,3,4,5,6,6,7,8,8,9,10,10,11]
+NOTES = ['c','c#','db','d','d#','eb','e','f','f#','gb','g','g#','ab','a','a#','bb','b'];
+VALUES = [0,1,1,2,3,3,4,5,6,6,7,8,8,9,10,10,11];
 
 // Note is made with either (1) a given text like 'c#4' or (2) a numeric value. Numeric value can take an optional parameter to prefer the flat name
 // It's an object that has text, name, octave and numeric value

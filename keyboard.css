@@ -1,4 +1,38 @@
+/*quiz page*/
+h3{
+    margin:20px;
+}
+.left{
+    float: left;
+}
+.clear{
+    clear: both;
+}
+.quiz{
+    padding-left: 20px;
+}
+.marker{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-indent: 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 50px;
+}
+.wrong:before{
+    content: "✗";
+    color: red;
+}
+.right:before{
+    content: "✓";
+    color: green;
+}
 
+/*keyboard*/
 .white{
 	background: #b2b2b2;
 }
