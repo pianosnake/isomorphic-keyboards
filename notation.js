@@ -1,13 +1,9 @@
 function Notation(options){
 	this.el = options.el;
 	this.svgns = "http://www.w3.org/2000/svg";
+	this.positions = {"c": 0, "d": -10, "e": -20, "f": -30, "g": -40, "a": -50,"b": -60};
+	this.octaveOffsets = {3: 70, 4: 0, 5: -70, 6: -140};
 	this.addSvgObj();
-	this.positions = {
-		"c": 0, "d": -10, "e": -20, "f": -30, "g": -40, "a": -50,"b": -60
-	};
-	this.octaveOffsets = {
-		3: 70, 4: 0, 5: -70, 6: -140
-	}
 }
 
 Notation.prototype = {
@@ -28,12 +24,19 @@ Notation.prototype = {
 		this.staff = this.svg.getElementById("staff");
 		this.staffBBox = this.staff.getBBox();
 		this.reset();
+		if(this.pendingNote){
+			this.draw(this.pendingNote);
+		}
 	}, 
 
 	draw: function(note){
+		if(!this.svg){
+			this.pendingNote = note;
+			return;
+		}
 		this.reset();
 		this.show(this.noteHead);
-		var notePosition = this.getPosition(note);
+		var notePosition = this.computePosition(note);
 
 		if(note.text.charAt(1) == "b"){
 			this.show(this.flat, notePosition);
@@ -46,7 +49,7 @@ Notation.prototype = {
 		this.noteHead.setAttribute("transform","translate(0,"+notePosition+")");
 	}, 
 
-	getPosition: function(note){
+	computePosition: function(note){
 		var start = this.octaveOffsets[note.octave];
 		return start + this.positions[note.text.charAt(0)];
 	}, 

@@ -41,8 +41,7 @@ function noteClick(clickedButton){
 $(document).ready(function(){
 	showKeyboard($("select option:first").val());
 	notation = new Notation({
-		el: $("#notation"),
-		width: 300
+		el: $("#notation")
 	});
 	quiz = new Quiz();
 });
