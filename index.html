@@ -3,65 +3,14 @@
 <meta charset="utf-8">
 <title>Isomorphic Musical Keyboards</title>
 <link rel=stylesheet type="text/css" href="keyboard.css">
-<script src="jquery.min.js"></script>
-<script src="note.js"></script>
-<script src="keyboard.js"></script>
-<script src="notation.js"></script>
-<script src="quiz.js"></script>
-
-<style>
-.note-and-keyboard{
-	width: 1200px;
-}
-.left{
-	float: left;
-}
-.clear{
-	clear: both;
-}
-.quiz{
-	padding-left: 20px;	
-}
-.marker{
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	left: 0;
-	top: 0;
-	text-indent: 0;
-	text-align: center;
-	font-weight: bold;
-	font-size: 40px;
-	line-height: 50px;
-}
-.wrong:before{
-	content: "✗";
-	color: red;
-}
-.right:before{
-	content: "✓";
-	color: green;
-}
-</style>
+<script src="js/jquery.min.js"></script>
+<script src="js/note.js"></script>
+<script src="js/keyboard.js"></script>
+<script src="js/notation.js"></script>
+<script src="js/quiz.js"></script>
 
 </head>
 <body>
-<h1>Isomorphic Musical Keyboards</h1>
-http://www.emusic.com/album/jason-webley/viaje/10902627/
-http://svg-edit.googlecode.com/svn/branches/2.6/editor/svg-editor.html
-http://www.newyorker.com/online/blogs/culture/2013/10/jonathan-schwartz-favorite-cds-recordings-american-songbook.html
-<p>Isomorphic musical keyboards must have been around ever since a lazy pianist decided that transposing between keys on the piano was too hard. Although they look alien to most people, compared to the piano keyboard, any of the isomorphic keyboards make more logical sense. The keyboard that made its furthest inroads into the piano world was the one patented by Paul von Jankó in 1882 of which a fair number of examples can be found on the net. (See <a href="http://squeezehead.com/uniform-keyboard/">this</a>)</p>
-
-<p>In the 20th century proponents of microtonality employed them to build instruments such as the Fokker 31 tone organ. Brian Hayden developed a concertina to use the Wicki system in the 60's that kept all the fingers playing a diatonic scale together. 
-
-<p>But the most popular isomorphic keyboards have to be the ones used on accordions. The Stradella bass system's rows of roots and counters is an isomorphic system though only 2 of the isomorphic rows are usually available, namely the roots and the counters. On the treble side, the B chromatic system is very popular in Russia and the Balkans, and the C system is widely used in Western Europe. The B system was invented in the 1850's when the Austrian musician Franz Walther had an idea to arrange the rows of buttons on a Schrammel accordion to match the notes in a diminished chord.</p>
-
-<p>These keyboards have also inspired a rethinking of music notation. The thinking is similar: why not have every pattern of dots on the staff, regardless of its vertical position, mean the same thing musically? Similar to how guitar tablature notation evolved to fit the instrument layout, these notation systems follow the layout of the keyboard they're meant for. 
-
-<p>Although transposing is difficult on a regular piano keyboard there are advantages to mastering each different key. A voicing may sound good in the middle register but transposed half an octave down it may sound muddy. Also a voicing or lick may feel very comfortable in one key but be impossible to play in another key. These acoustic and physical considerations often result in new arrangements that sound quite different in each key. Isomorphic keyboards enourage using the same voicings and fingerings in all keys which may not sound good in every register. As a counter argument, isomorphic keyboards allow new licks and voicings that are impossible on the piano keyboard. 
-
-<p>The fascinating thing is that all these systems can be built on a brick-like lattice with a simple algorithm. The variation between the systems can be boiled down to two parameters: (1) the number of rows required before the pattern repeats and (2) the size of the interval going up one key diagonally.
-
 <div id="keyboard"></div>
 
 <div>
@@ -87,21 +36,9 @@ http://www.newyorker.com/online/blogs/culture/2013/10/jonathan-schwartz-favorite
 		</div>
 	</div>
 </div>
-	
-
-
 
 <div class="clear"></div>
 
-<h3>Related:</h3>
-<ul>
-<li><a href="http://schrammelharmonika.nonfoodfactory.org/Andreas_Teufel/">Andreas Teufel's thesis</a> about the Vienese Schrammelharmonika.
-<li><a href="http://www.shiverware.com/musix.html">Musix<a/> An iPhone app to build any isomorphic keyboard you can think of
-<li><a href="http://en.wikipedia.org/wiki/Isomorphic_keyboard">Isomorphic Keyboard</a> Wikipedia
-<li><a href="http://squeezehead.com/uniform-keyboard/">Uniform Keyboard</a> by Noel Cragg
-<li><a href="http://www.thecipher.com/c_and_b_system_cba_spelling.html">The Cipher - B and C systems comparisons</a> by Roger Edward Blumberg
-<li><a href="http://www.accordionpage.com/treble.html">Hans Palm's Accordion page</a>
-</ul>
 </body>
 
 </html>

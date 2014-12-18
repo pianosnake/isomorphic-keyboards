@@ -5,16 +5,16 @@ require 'fileutils'
 Rake::Minify.new(:minify_and_combine_js) do
   dir("#{Dir.pwd}/") do
     group("quiz-min.js") do
-      add("quiz.js")
-      add("notation.js")
-      add("note.js")
-      add("keyboard.js")
+      add("js/quiz.js")
+      add("js/notation.js")
+      add("js/note.js")
+      add("js/keyboard.js")
     end
   end
 end
 
 task :minify_css do
-  css_file_in = File.read('keyboard.css')
+  css_file_in = File.read("keyboard.css")
   engine = Sass::Engine.new(css_file_in, syntax: :scss, style: :compressed)
   css_file_out = File.new("keyboard-min.css", "w")
   css_file_out.write(engine.render)
@@ -22,7 +22,7 @@ task :minify_css do
 end
 
 task :copy_to_google do
-  destination = "/Users/florinmq/Google Drive/Note-Recognition/"
+  destination = "~/Google Drive/Note-Recognition/"
   cp("keyboard-min.css", destination)
   cp("quiz-min.js", destination)
   cp("blog.html", destination)
