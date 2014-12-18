@@ -10,7 +10,7 @@ Notation.prototype = {
 	addSvgObj: function(){
 		var self = this; 
 		var svgObj = document.createElement("object");
-		svgObj.data = "note_on_staff.svg";
+		svgObj.data = "images/note_on_staff.svg";
 		svgObj.type = "image/svg+xml";
 		svgObj.onload = function(){self.render()};
 		this.el.append(svgObj);
