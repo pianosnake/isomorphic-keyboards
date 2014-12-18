@@ -13,13 +13,10 @@ function parseQueryString(query){
 function showKeyboard(options){
 	var options = parseQueryString(options);
 
-	keyboard = new Keyboard({
-		el: $("#keyboard"), 
-		system: options.system,
-		startNote: options.start,
-		rows: parseInt(options.rows),
+	keyboard = new Keyboard($.extend({
+		el: $("#keyboard"),
 		onClick: noteClick
-	});
+	}, options));
 }
 
 function noteClick(clickedButton){

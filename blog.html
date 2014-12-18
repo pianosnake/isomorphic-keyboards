@@ -14,15 +14,16 @@
 
 	<div class="left quiz">
 		<h3>Available Keyboards</h3>
-		<select onchange="showKeyboard(this.value)" id="keyboardSelector"> 
-		<option value='system=C&rows=5&start=gb3'>C-system 5 rows</option>
-		<option value='system=C&rows=4&start=gb3'>C-system 4 rows</option>
-		<option value='system=B&rows=3&start=ab3'>B-system 3 rows (Schrammel)</option>
-		<option value='system=B&rows=5&start=b3'>B-system 5 rows</option>
-		<option value='system=B&rows=6&start=b3'>B-system 6 rows</option>
-		<option value='system=S&rows=2&start=gb1'>Stradella root &amp; counter-bass</option>
-		<option value='system=J&rows=4&start=c4'>Jankó 4 rows</option>
-		<option value='system=W&rows=9&start=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
+		<select onchange="showKeyboard(this.value)" id="keyboardSelector">
+      <!--stepSize: 1 means the next note up and to the right is 1 semitone.-->
+      <option value='stepSize=1&systemRows=3&displayRows=5&startNote=gb3'>C-system 5 rows</option>
+      <option value='stepSize=1&systemRows=3&displayRows=4&startNote=gb3'>C-system 4 rows</option>
+      <option value='stepSize=2&systemRows=3&displayRows=3&startNote=ab3'>B-system 3 rows (Schrammel)</option>
+      <option value='stepSize=2&systemRows=3&displayRows=5&startNote=b3'>B-system 5 rows</option>
+      <option value='stepSize=2&systemRows=3&displayRows=6&startNote=b3'>B-system 6 rows</option>
+      <option value='stepSize=-1&systemRows=7&displayRows=2&startNote=gb1'>Stradella root &amp; counter-bass</option>
+      <option value='stepSize=1&systemRows=2&displayRows=4&startNote=c4'>Jankó 4 rows</option>
+      <option value='stepSize=7&systemRows=2&displayRows=9&startNote=gb3'>Wicki-Hayden (Jammer) 9 rows</option>
 		</select>
 		
 		<button id="quizBtn" onclick="quiz.buttonClick()">Start Quiz</button><br>

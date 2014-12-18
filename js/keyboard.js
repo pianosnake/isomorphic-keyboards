@@ -1,24 +1,14 @@
 function Keyboard (options){
 	this.el = options.el;
-	this.totalRows = options.rows ? parseInt(options.rows) : 5;
+	this.displayRows = options.displayRows ? parseInt(options.displayRows) : 5;
 	this.startNote = new Note(options.startNote);
 	this.startNoteNumericValue = this.startNote.numericValue;
 	this.lowestNote = null;
 	this.highestNote = null;
 	this.buttonsPerRow = options.buttonsPerRow ? parseInt(options.buttonsPerRow) : 14;
 	this.clickCallback = options.onClick;
-	this.systems = {
-		//stepSize: 1 means the next note up and to the right is 1 semitone.
-		"C": {rows: 3, stepSize: 1},
-		"B": {rows: 3, stepSize: 2},
-		"F": {rows: 5, stepSize: 1},
-		"W": {rows: 2, stepSize: 7},
-		"S": {rows: 7, stepSize: -1},
-		"J": {rows: 2, stepSize: 1}
-	}
-  this.systemRows = this.systems[options.system].rows;
-  this.stepSize = this.systems[options.system].stepSize;
-	this.system = options.system ? this.systems[options.system] : this.systems["C"];
+  this.systemRows = parseInt(options.systemRows);
+  this.stepSize = parseInt(options.stepSize);
 	this.render();
 	this.attachEvents();
 }
@@ -36,7 +26,7 @@ Keyboard.prototype = {
 	render: function(){
 		this.el.unbind();
 		this.el.empty();
-		for(var i=this.totalRows-1; i>-1; i--){
+		for(var i=this.displayRows-1; i>-1; i--){
 			var extraClass = (i%2==0) ? "even" : ""
 			this.el.append("<div class='row "+extraClass+" row_"+i+"'></div>");
 			this.addButtonsToRow(i);
