@@ -26,11 +26,11 @@ Note.prototype = {
 		if(parts.length == 3 && !isNaN(parts[2])){
 			// if the note is like gb3
 			this.name = parts[0] + "" + parts[1];
-			this.octave = parts[2]
+			this.octave = parseInt(parts[2]);
 		}else if (parts.length == 2 && !isNaN(parts[1])){
 			//or if it's like a3
 			this.name = parts[0];
-			this.octave = parts[1];			
+			this.octave = parseInt(parts[1]);
 		}else if (parts.length ==1){
 			//or if it's like c then just use c4
 			this.name = parts[0];
@@ -38,7 +38,7 @@ Note.prototype = {
 		}
 	},
 
-	setNumericValue: function(parts){
+	setNumericValue: function(){
 		this.numericValue =  VALUES[NOTES.indexOf(this.name)] + (this.octave * 12);
 	},
 

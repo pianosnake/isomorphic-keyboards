@@ -10,14 +10,14 @@ function parseQueryString(query){
     return obj;
 }
 
-function showKeyboard(spec){
-	var specs = parseQueryString(spec);
+function showKeyboard(options){
+	var options = parseQueryString(options);
 
 	keyboard = new Keyboard({
 		el: $("#keyboard"), 
-		system: specs.system, 
-		startNote: specs.start,
-		rows: parseInt(specs.rows),
+		system: options.system,
+		startNote: options.start,
+		rows: parseInt(options.rows),
 		onClick: noteClick
 	});
 }

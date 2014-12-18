@@ -56,7 +56,9 @@ Notation.prototype = {
 
 	show: function(el, position){
 		el.setAttribute('visibility','visible');
-		el.setAttribute("transform","translate(0,"+position+")");
+		if(position){
+    el.setAttribute("transform","translate(0,"+position+")");
+    }
 	},
 
 	hide: function(el){

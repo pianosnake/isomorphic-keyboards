@@ -1,11 +1,11 @@
 function Keyboard (options){
 	this.el = options.el;
-	this.totalRows = options.rows || 5;
+	this.totalRows = options.rows ? parseInt(options.rows) : 5;
 	this.startNote = new Note(options.startNote);
 	this.startNoteNumericValue = this.startNote.numericValue;
 	this.lowestNote = null;
 	this.highestNote = null;
-	this.buttonsPerRow = 14;
+	this.buttonsPerRow = options.buttonsPerRow ? parseInt(options.buttonsPerRow) : 14;
 	this.clickCallback = options.onClick;
 	this.systems = {
 		//stepSize: 1 means the next note up and to the right is 1 semitone.
@@ -16,6 +16,8 @@ function Keyboard (options){
 		"S": {rows: 7, stepSize: -1},
 		"J": {rows: 2, stepSize: 1}
 	}
+  this.systemRows = this.systems[options.system].rows;
+  this.stepSize = this.systems[options.system].stepSize;
 	this.system = options.system ? this.systems[options.system] : this.systems["C"];
 	this.render();
 	this.attachEvents();
@@ -23,10 +25,12 @@ function Keyboard (options){
 
 Keyboard.prototype = {
 	attachEvents: function(){
-		var self = this;
-		this.el.on("click", ".button", function(evt){
-			self.clickCallback(evt.target);
-		})
+		var self=this;
+    if(this.clickCallback){
+      this.el.on("click",".button",function(evt){
+        self.clickCallback(evt.target);
+      })
+    }
 	},
 
 	render: function(){
@@ -73,7 +77,7 @@ Keyboard.prototype = {
 
 		// calculate the wanted note as a distance from the startNote
 		// based on the given row, the step size, and position
-		var newNoteValue = (this.startNoteNumericValue+ (y*this.system.stepSize) + (this.system.rows * x)); 
+		var newNoteValue = (this.startNoteNumericValue+ (y*this.stepSize) + (this.systemRows * x));
 
 		this.compareToHighestAndLowestNote(newNoteValue);
 		return new Note(newNoteValue);
